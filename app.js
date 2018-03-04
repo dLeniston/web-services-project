@@ -4,8 +4,10 @@ const express = require('express');
 const config = require('./config/config');
 const glob = require('glob');
 const mongoose = require('mongoose');
-
+mongoose.set('debug', true);
 mongoose.connect(config.db);
+mongoose.Promise = Promise;
+
 const db = mongoose.connection;
 db.on('error', () => {
   throw new Error('unable to connect to database at ' + config.db);
