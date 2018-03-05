@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Recipe = mongoose.model('Recipe');
+const User = mongoose.model('User');
+const passport = require("passport");
 
 module.exports = (app) => {
   app.use('/', router);
@@ -22,7 +24,7 @@ router.get('/', (req, res) => {
 //--- RECIPE POST ROUTE ---//
 
 //Get new recipe form
-router.get("/new", (req, res) =>{
+router.get("/new", isLoggedIn, (req, res) =>{
   res.render("newRecipe");
 });
 
@@ -34,7 +36,11 @@ router.post('/recipes/new', (req, res) => {
     var ingredients = req.body.ingredients;
     var instructions = req.body.instructions;
     var created = req.body.created;
-    var newRecipe = {name: name, img: img, ingredients: ingredients, instructions: instructions, created: created};
+    var author = {
+        id: req.user._id,
+        username: req.user.username
+    };
+    var newRecipe = {name: name, img: img, ingredients: ingredients, instructions: instructions, created: created, author: author};
     //create the new recipe object and add to db
     Recipe.create(newRecipe)
     .then(function(newRecipe){
@@ -60,7 +66,7 @@ router.get("/recipe/:id", (req, res) =>{
 //--- RECIPE EDIT ROUTES ---//
 
 //Get edit form
-router.get("/recipe/:id/edit", (req, res) => {
+router.get("/recipe/:id/edit", isLoggedIn, (req, res) => {
   Recipe.findById(req.params.id).then(function(foundRecipe){
     //render the edit form with the form filled in with the recipe to be updated current data
     res.render("editRecipe", {recipe: foundRecipe});
@@ -92,3 +98,57 @@ router.delete("/recipe/:id", (req, res) => {
   });
 });
 
+//--- LOGIN/LOGOUT/REGISTER ROUTES ---//
+
+//Register form
+router.get("/register", (req, res) => {
+   res.render("register");
+});
+
+//Register logic
+router.post("/register", (req, res) => {
+  var newUser = new User({username:req.body.username});
+  //Take information supplied by user and attempt to register account
+  User.register(newUser, req.body.password, (err, user) => {
+    if(err){
+      //If theres and error, return user to register page and send message (NOTE: DONT FORGET TO HANDLE THIS)
+      return res.render("register", {"error": err.message});
+    }
+      //If successful, authenticate new user using passport and redirect to index page 
+      passport.authenticate("local")(req,res,function(){
+        res.redirect("/");
+      });
+  });
+});
+
+//Login form
+router.get("/login", (req, res) => {
+   res.render("login");
+});
+
+//Login Logic
+router.post("/login", passport.authenticate("local", 
+    {
+        successRedirect: "/",
+        failureRedirect: "/login"
+    }), function(req,res){
+});
+
+//Logout logic
+router.get("/logout", (req, res) =>{
+    req.logout();
+    res.redirect("/");
+});
+
+//--- MIDDLEWARE ---//
+
+//Logged in middleware
+
+function isLoggedIn(req,res,next){
+  //If the user is authenticated (i.e. logged on, proceed to "next")
+    if(req.isAuthenticated()){
+        return next();
+    }
+    //Otherwise redirect them to login page (NOTE: DISPLAY MESSAGE LETTING USER KNOW WHY THEY WERE REDIRECTED)
+    res.redirect("/login");
+}

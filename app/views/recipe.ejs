@@ -9,10 +9,14 @@
             <div class="thumbnail">
                 <img class="img-responsive" src="<%= recipe.img %>">
                 <div class="caption-full">
-                    <h4 class="pull-right"><%= recipe.ingredients %></h4>
+                    <h4 class="pull-right">Ingredients: <%= recipe.ingredients %></h4>
                     <h4><a href=""><%= recipe.name %></a></h4>
                     <p>
-                        <%= recipe.instructions %>
+                         <h2>Instructions</h2>
+                         <%= recipe.instructions %>
+                    </p>
+                    <p>
+                        <em>Submitted By <%=recipe.author.username %>, <%= recipe.created_date.toDateString() %></em>
                     </p>
                         <a class="btn btn-warning" href="/recipe/<%= recipe._id %>/edit">Edit</a>
                         <form class="delete-form" action="/recipe/<%= recipe._id %>?_method=DELETE" method="POST">
