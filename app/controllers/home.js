@@ -10,6 +10,7 @@ module.exports = (app) => {
 //--- INDEX ROUTE ---//
 router.get('/', (req, res) => {
   Recipe.find().then(function(recipes){
+    //show all recipes on the index page
     res.render('index', {
       recipes: recipes
     }).catch(function(err){
@@ -34,8 +35,10 @@ router.post('/recipes/new', (req, res) => {
     var instructions = req.body.instructions;
     var created = req.body.created;
     var newRecipe = {name: name, img: img, ingredients: ingredients, instructions: instructions, created: created};
+    //create the new recipe object and add to db
     Recipe.create(newRecipe)
     .then(function(newRecipe){
+      //redirect to index
       res.redirect('/');
     }).catch(function(err){
       res.send(err);
@@ -47,6 +50,7 @@ router.post('/recipes/new', (req, res) => {
 router.get("/recipe/:id", (req, res) =>{
   //find one recipe with correct id
   Recipe.findById(req.params.id).then(function(foundRecipe){
+    //show the recipe that has been selecteds data on the show recipe view
     res.render("recipe", {recipe: foundRecipe});
   }).catch(function(err){
     res.send(err);
@@ -58,6 +62,7 @@ router.get("/recipe/:id", (req, res) =>{
 //Get edit form
 router.get("/recipe/:id/edit", (req, res) => {
   Recipe.findById(req.params.id).then(function(foundRecipe){
+    //render the edit form with the form filled in with the recipe to be updated current data
     res.render("editRecipe", {recipe: foundRecipe});
   }).catch(function(err){
     res.send(err);
@@ -66,7 +71,9 @@ router.get("/recipe/:id/edit", (req, res) => {
 
 //Find and update recipe
 router.put("/recipe/:id", (req, res) =>{
+  //update the recipe
   Recipe.findByIdAndUpdate(req.params.id, req.body.recipe).then(function(updatedRecipe){
+    //redirect to the updated recipes show page
     res.redirect("/recipe/" + req.params.id);
   }).catch(function(err){
     res.send(err);
@@ -76,7 +83,9 @@ router.put("/recipe/:id", (req, res) =>{
 //--- RECIPE DELETE ROUTE ---//
 
 router.delete("/recipe/:id", (req, res) => {
+  //delete recipe
   Recipe.findByIdAndRemove(req.params.id).then(function(){
+    //redirect to index page
     res.redirect('/');
   }).catch(function(err){
     res.sendStatus(500, err);
