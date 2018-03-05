@@ -1,17 +1,25 @@
 const express = require('express');
 const glob = require('glob');
-
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const compress = require('compression');
 const methodOverride = require('method-override');
+const passport = require("passport");
+const LocalStrategy   = require("passport-local");
+const User = require("../app/models/user");
 
 module.exports = (app, config) => {
   const env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
   app.locals.ENV_DEVELOPMENT = env == 'development';
+  
+  app.use(require("express-session")({
+    secret: "D51 AGASKI LRSDBC",
+    resave: false,
+    saveUninitialized: false
+}));
   
   app.set('views', config.root + '/app/views');
   app.set('view engine', 'ejs');
@@ -26,6 +34,19 @@ module.exports = (app, config) => {
   app.use(compress());
   app.use(express.static(config.root + '/public'));
   app.use(methodOverride("_method"));
+  
+  //PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret: "This is my App",
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
   controllers.forEach((controller) => {
