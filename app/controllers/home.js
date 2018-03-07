@@ -29,7 +29,7 @@ router.get("/new", isLoggedIn, (req, res) =>{
 });
 
 //New recipe post route
-router.post('/recipes/new', (req, res) => {
+router.post('/recipes/new', isLoggedIn, (req, res) => {
   //create recipe
   var name = req.body.name;
     var img = req.body.img;
@@ -66,7 +66,7 @@ router.get("/recipe/:id", (req, res) =>{
 //--- RECIPE EDIT ROUTES ---//
 
 //Get edit form
-router.get("/recipe/:id/edit", isLoggedIn, (req, res) => {
+router.get("/recipe/:id/edit", checkRecipeOwnership, (req, res) => {
   Recipe.findById(req.params.id).then(function(foundRecipe){
     //render the edit form with the form filled in with the recipe to be updated current data
     res.render("editRecipe", {recipe: foundRecipe});
@@ -76,7 +76,7 @@ router.get("/recipe/:id/edit", isLoggedIn, (req, res) => {
 });
 
 //Find and update recipe
-router.put("/recipe/:id", (req, res) =>{
+router.put("/recipe/:id", checkRecipeOwnership, (req, res) =>{
   //update the recipe
   Recipe.findByIdAndUpdate(req.params.id, req.body.recipe).then(function(updatedRecipe){
     //redirect to the updated recipes show page
@@ -88,7 +88,7 @@ router.put("/recipe/:id", (req, res) =>{
 
 //--- RECIPE DELETE ROUTE ---//
 
-router.delete("/recipe/:id", (req, res) => {
+router.delete("/recipe/:id", checkRecipeOwnership, (req, res) => {
   //delete recipe
   Recipe.findByIdAndRemove(req.params.id).then(function(){
     //redirect to index page
@@ -151,4 +151,29 @@ function isLoggedIn(req,res,next){
     }
     //Otherwise redirect them to login page (NOTE: DISPLAY MESSAGE LETTING USER KNOW WHY THEY WERE REDIRECTED)
     res.redirect("/login");
+}
+
+//Check the ownership of a recipe object
+
+function checkRecipeOwnership(req, res, next){
+    if(req.isAuthenticated()){
+        //Check if the user owns the recipe record
+        Recipe.findById(req.params.id, function(err, foundRecipe){
+            if(err){
+                //res.send(err);
+                res.redirect("back");
+             }else{
+                 //does user own campground?
+                 if(foundRecipe.author.id.equals(req.user._id)){
+                     next();
+                 }else{
+                     //res.send("You do not have permission");
+                     res.redirect("back");
+                 }
+            }
+        });
+    }else{
+        //res.send("error", "You need to be Logged In to do that");
+        res.redirect("back");
+    }
 }
