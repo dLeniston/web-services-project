@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Recipe = mongoose.model('Recipe');
+const Comment = mongoose.model('Comment');
 const User = mongoose.model('User');
 const passport = require("passport");
 
@@ -93,6 +94,27 @@ router.delete("/recipe/:id", checkRecipeOwnership, (req, res) => {
   Recipe.findByIdAndRemove(req.params.id).then(function(){
     //redirect to index page
     res.redirect('/');
+  }).catch(function(err){
+    res.sendStatus(500, err);
+  });
+});
+
+//--- COMMENTS ROUTES ---//
+
+//Comments New
+/*router.get("/recipes/:id/comments/new", isLoggedIn, function(req, res){
+    Recipe.findById(req.params.id, function(err, recipe){
+        if(err){
+            console.log(err);
+        }else{
+            res.render("newComment", {recipe: recipe});
+        }
+    });
+});*/
+
+router.get("/recipe/:id/comments/new", isLoggedIn, (req, res) =>{
+  Recipe.findById(req.params.id).then(function(recipe){
+    res.render("newComment", {recipe: recipe});
   }).catch(function(err){
     res.sendStatus(500, err);
   });
