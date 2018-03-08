@@ -34,6 +34,7 @@ module.exports = (app, config) => {
   app.use(compress());
   app.use(express.static(config.root + '/public'));
   app.use(methodOverride("_method"));
+  app.locals.moment = require("moment");
   
   //PASSPORT CONFIGURATION
 app.use(require("express-session")({

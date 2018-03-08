@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router  = express.Router({mergeParams: true});
 const mongoose = require('mongoose');
 const Recipe = mongoose.model('Recipe');
 const Comment = mongoose.model('Comment');
@@ -56,11 +56,13 @@ router.post('/recipes/new', isLoggedIn, (req, res) => {
 
 router.get("/recipe/:id", (req, res) =>{
   //find one recipe with correct id
-  Recipe.findById(req.params.id).then(function(foundRecipe){
+  Recipe.findById(req.params.id).populate("comments").exec(function(err, foundRecipe){
+    if(err){
+      res.setStatus(500, err);
+    }else{
     //show the recipe that has been selecteds data on the show recipe view
     res.render("recipe", {recipe: foundRecipe});
-  }).catch(function(err){
-    res.send(err);
+    }
   });
 });
 
@@ -83,7 +85,7 @@ router.put("/recipe/:id", checkRecipeOwnership, (req, res) =>{
     //redirect to the updated recipes show page
     res.redirect("/recipe/" + req.params.id);
   }).catch(function(err){
-    res.send(err);
+    res.sendStatus(500, err);
   });
 });
 
@@ -101,17 +103,6 @@ router.delete("/recipe/:id", checkRecipeOwnership, (req, res) => {
 
 //--- COMMENTS ROUTES ---//
 
-//Comments New
-/*router.get("/recipes/:id/comments/new", isLoggedIn, function(req, res){
-    Recipe.findById(req.params.id, function(err, recipe){
-        if(err){
-            console.log(err);
-        }else{
-            res.render("newComment", {recipe: recipe});
-        }
-    });
-});*/
-
 router.get("/recipe/:id/comments/new", isLoggedIn, (req, res) =>{
   Recipe.findById(req.params.id).then(function(recipe){
     res.render("newComment", {recipe: recipe});
@@ -119,6 +110,57 @@ router.get("/recipe/:id/comments/new", isLoggedIn, (req, res) =>{
     res.sendStatus(500, err);
   });
 });
+
+//Comments Create
+router.post("/recipe/:id/comments", isLoggedIn, function(req, res){
+    Recipe.findById(req.params.id, function(err, recipe){
+        if(err){
+            console.log(err);
+            res.redirect("/");
+        }else{
+            Comment.create(req.body.comment, function(err, comment){
+                if(err){
+                    res.sendStatus(500, err);
+                    console.log(err);
+                }else{
+                    //add username and id to comment
+                    comment.author.id = req.user._id;
+                    comment.author.username = req.user.username;
+                    //save comment
+                    comment.save();
+                    recipe.comments.push(comment);
+                    recipe.save();
+                    console.log(comment);
+                    res.redirect("/recipe/" + recipe._id);
+                }
+            });
+        }
+    });
+});
+
+//EDIT ROUTE
+
+router.get("/recipe/:recipe_id/comments/:comment_id/edit", (req, res) => {
+  Comment.findById(req.params.comment_id).then(function(foundComment){
+    res.render("editComment", {recipe_id: req.params.id, comment: foundComment});
+  }).catch(function(err){
+    res.sendStatus(500, err);
+  });
+});
+
+//Update
+
+/*router.put("/recipe/:recipe_id/comments/:comment_id", function(req, res){
+   Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
+       if(err){
+           res.redirect("back");
+       }else{
+           res.redirect("/recipe/" + req.params.id);
+       }
+   });
+});*/
+
+
 
 //--- LOGIN/LOGOUT/REGISTER ROUTES ---//
 
