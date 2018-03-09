@@ -6,8 +6,10 @@ const Comment = mongoose.model('Comment');
 const User = mongoose.model('User');
 const passport = require("passport");
 
+var indexRoutes = require("../helpers/index");
 module.exports = (app) => {
   app.use('/', router);
+  app.use(indexRoutes);
 };
 
 //--- INDEX ROUTE ---//
@@ -25,12 +27,12 @@ router.get('/', (req, res) => {
 //--- RECIPE POST ROUTE ---//
 
 //Get new recipe form
-router.get("/new", isLoggedIn, (req, res) =>{
+router.get("/new", /*isLoggedIn,*/ (req, res) =>{
   res.render("newRecipe");
 });
 
 //New recipe post route
-router.post('/recipes/new', isLoggedIn, (req, res) => {
+router.post('/recipes/new', /*isLoggedIn,*/ (req, res) => {
   //create recipe
   var name = req.body.name;
     var img = req.body.img;
@@ -103,7 +105,7 @@ router.delete("/recipe/:id", checkRecipeOwnership, (req, res) => {
 
 //--- COMMENTS ROUTES ---//
 
-router.get("/recipe/:id/comments/new", isLoggedIn, (req, res) =>{
+router.get("/recipe/:id/comments/new", /*isLoggedIn,*/ (req, res) =>{
   Recipe.findById(req.params.id).then(function(recipe){
     res.render("newComment", {recipe: recipe});
   }).catch(function(err){
@@ -112,7 +114,7 @@ router.get("/recipe/:id/comments/new", isLoggedIn, (req, res) =>{
 });
 
 //Comments Create
-router.post("/recipe/:id/comments", isLoggedIn, function(req, res){
+router.post("/recipe/:id/comments", /*isLoggedIn,*/ function(req, res){
     Recipe.findById(req.params.id, function(err, recipe){
         if(err){
             console.log(err);
@@ -163,7 +165,7 @@ router.get("/recipe/:recipe_id/comments/:comment_id/edit", (req, res) => {
 
 
 //--- LOGIN/LOGOUT/REGISTER ROUTES ---//
-
+/*
 //Register form
 router.get("/register", (req, res) => {
    res.render("register");
@@ -215,7 +217,7 @@ function isLoggedIn(req,res,next){
     }
     //Otherwise redirect them to login page (NOTE: DISPLAY MESSAGE LETTING USER KNOW WHY THEY WERE REDIRECTED)
     res.redirect("/login");
-}
+}*/
 
 //Check the ownership of a recipe object
 

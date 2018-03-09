@@ -51,10 +51,11 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req,res,next){
     res.locals.currentUser = req.user;
-    //res.locals.error = req.flash("error");
-    //res.locals.success = req.flash("success");
     next();
 });
+
+//var recipeRoutes = require("../app/helpers/recipe");
+//var indexRoutes  = require("../app/helpers/index");
 
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
   controllers.forEach((controller) => {
@@ -86,6 +87,9 @@ app.use(function(req,res,next){
       title: 'error'
     });
   });
+  
+  //app.use(indexRoutes);
+  //app.use("/recipes", recipeRoutes);
 
   return app;
 };
