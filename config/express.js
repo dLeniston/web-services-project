@@ -54,9 +54,6 @@ app.use(function(req,res,next){
     next();
 });
 
-//var recipeRoutes = require("../app/helpers/recipe");
-//var indexRoutes  = require("../app/helpers/index");
-
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
   controllers.forEach((controller) => {
     require(controller)(app);
@@ -88,8 +85,5 @@ app.use(function(req,res,next){
     });
   });
   
-  //app.use(indexRoutes);
-  //app.use("/recipes", recipeRoutes);
-
   return app;
 };

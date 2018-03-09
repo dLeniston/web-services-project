@@ -1,11 +1,24 @@
 var express     = require("express");
 var router      = express.Router();
 var User        = require("../models/user");
+var Recipe      = require("../models/recipe");
 var passport    = require("passport");
 
 module.exports = (app) => {
   app.use('/', router);
 };
+
+router.get('/', (req, res) => {
+  Recipe.find().then(function(recipes){
+    //show all recipes on the index page
+    res.render('index', {
+      recipes: recipes
+    }).catch(function(err){
+      res.send(err);
+    });
+  });
+});
+
 //Register form
 router.get("/register", (req, res) => {
    res.render("register");
