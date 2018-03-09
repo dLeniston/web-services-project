@@ -1,10 +1,4 @@
 const express = require('express');
-const router      = express.Router();
-const mongoose = require('mongoose');
-const Recipe = mongoose.model('Recipe');
-const Comment = mongoose.model('Comment');
-const User = mongoose.model('User');
-const passport = require("passport");
 
 var indexRoutes = require("../helpers/index");
 var recipeRoutes    = require("../helpers/recipe");

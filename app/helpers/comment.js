@@ -40,7 +40,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 });
 
 //EDIT ROUTE
-router.get("/:comment_id/edit", (req, res) => {
+router.get("/:comment_id/edit", middleware.checkCommentOwnership, (req, res) => {
   Comment.findById(req.params.comment_id).then(function(foundComment){
     res.render("editComment", {recipe_id: req.params.id, comment: foundComment});
   }).catch(function(err){
@@ -49,9 +49,18 @@ router.get("/:comment_id/edit", (req, res) => {
 });
 
 //UPDATE ROUTE
-router.put("/:comment_id", (req, res) => {
+router.put("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment).then(function(updatedComment){
         res.redirect("/recipes/" + req.params.id);
+    }).catch(function(err){
+        res.sendStatus(500, err);
+    });
+});
+
+//DELETE ROUTE
+router.delete("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
+    Comment.findByIdAndRemove(req.params.comment_id).then(function(){
+        res.redirect("back");
     }).catch(function(err){
         res.sendStatus(500, err);
     });

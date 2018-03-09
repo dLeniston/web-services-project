@@ -53,7 +53,7 @@ router.get("/:id", (req, res) =>{
       res.setStatus(500, err);
     }else{
     //show the recipe that has been selecteds data on the show recipe view
-    res.render("recipe", {recipe: foundRecipe});
+    res.render("recipe/recipe", {recipe: foundRecipe});
     }
   });
 });
