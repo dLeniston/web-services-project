@@ -4,8 +4,6 @@ var Recipe  = require("../models/recipe");
 var Comment     = require("../models/comment");
 var middleware  = require("../middleware");
 
-//--- COMMENTS ROUTES ---//
-
 router.get("/new", middleware.isLoggedIn, (req, res) =>{
   Recipe.findById(req.params.id).then(function(recipe){
     res.render("newComment", {recipe: recipe});
@@ -42,13 +40,21 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 });
 
 //EDIT ROUTE
-
 router.get("/:comment_id/edit", (req, res) => {
   Comment.findById(req.params.comment_id).then(function(foundComment){
     res.render("editComment", {recipe_id: req.params.id, comment: foundComment});
   }).catch(function(err){
     res.sendStatus(500, err);
   });
+});
+
+//UPDATE ROUTE
+router.put("/:comment_id", (req, res) => {
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment).then(function(updatedComment){
+        res.redirect("/recipes/" + req.params.id);
+    }).catch(function(err){
+        res.sendStatus(500, err);
+    });
 });
 
 module.exports = router;
