@@ -41,7 +41,7 @@
                              </p>
                              <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
                                  <a class="btn btn-xs btn-warning" 
-                                    href="/recipe/<%=recipe._id %>/comments/<%= comment._id %>/edit">
+                                    href="/recipes/<%=recipe._id %>/comments/<%= comment._id %>/edit">
                                     Edit
                                 </a>
                                 <form class="delete-form" action="/recipes/<%=recipe._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">

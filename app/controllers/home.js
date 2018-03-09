@@ -1,5 +1,5 @@
 const express = require('express');
-var router      = express.Router();
+const router      = express.Router();
 const mongoose = require('mongoose');
 const Recipe = mongoose.model('Recipe');
 const Comment = mongoose.model('Comment');
@@ -8,15 +8,17 @@ const passport = require("passport");
 
 var indexRoutes = require("../helpers/index");
 var recipeRoutes    = require("../helpers/recipe");
+var commentRoutes       = require("../helpers/comment");
 module.exports = (app) => {
   //app.use('/', router);
   app.use(indexRoutes);
   app.use("/recipes", recipeRoutes);
+  app.use("/recipes/:id/comments", commentRoutes);
 };
 
 //--- COMMENTS ROUTES ---//
 
-router.get("/recipe/:id/comments/new", /*isLoggedIn,*/ (req, res) =>{
+/*router.get("/recipe/:id/comments/new", isLoggedIn, (req, res) =>{
   Recipe.findById(req.params.id).then(function(recipe){
     res.render("newComment", {recipe: recipe});
   }).catch(function(err){
@@ -25,7 +27,7 @@ router.get("/recipe/:id/comments/new", /*isLoggedIn,*/ (req, res) =>{
 });
 
 //Comments Create
-router.post("/recipe/:id/comments", /*isLoggedIn,*/ function(req, res){
+router.post("/recipe/:id/comments", isLoggedIn, function(req, res){
     Recipe.findById(req.params.id, function(err, recipe){
         if(err){
             console.log(err);
@@ -59,4 +61,4 @@ router.get("/recipe/:recipe_id/comments/:comment_id/edit", (req, res) => {
   }).catch(function(err){
     res.sendStatus(500, err);
   });
-});
+});*/
