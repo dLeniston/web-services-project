@@ -4,20 +4,8 @@ var middleware  = require("../middleware");
 var Recipe  = require("../models/recipe");
 var Comment     = require("../models/comment");
 
-//Index - show recipes
-/*router.get('/', (req, res) => {
-  Recipe.find().then(function(recipes){
-    //show all recipes on the index page
-    res.render('index', {
-      recipes: recipes
-    }).catch(function(err){
-      res.send(err);
-    });
-  });
-});*/
-
 //Get new recipe form
-router.get("/new", (req, res) =>{
+router.get("/new", middleware.isLoggedIn, (req, res) =>{
   res.render("newRecipe");
 });
 

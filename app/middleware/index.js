@@ -5,49 +5,42 @@ var middlewareObj = {};
 
 //Logged in middleware
 
-middlewareObj.isLoggedIn = function(req,res,next){
-  //If the user is authenticated (i.e. logged on, proceed to "next")
+middlewareObj.isLoggedIn = (req, res, next) =>{
     if(req.isAuthenticated()){
         return next();
-    }
-    //Otherwise redirect them to login page (NOTE: DISPLAY MESSAGE LETTING USER KNOW WHY THEY WERE REDIRECTED)
+    }else{
     res.redirect("/login");
+    }
 };
 
-middlewareObj.checkRecipeOwnership = function(req, res, next){
+middlewareObj.checkRecipeOwnership = (req, res, next) =>{
     if(req.isAuthenticated()){
-        //Check if the user owns the recipe record
-        Recipe.findById(req.params.id, function(err, foundRecipe){
-            if(err){
-                //res.send(err);
+        Recipe.findById(req.params.id).then(function(foundRecipe){
+            if(foundRecipe.author.id.equals(req.user._id)){
+                next();
+            }else{
                 res.redirect("back");
-             }else{
-                 if(foundRecipe.author.id.equals(req.user._id)){
-                     next();
-                 }else{
-                     //res.send("You do not have permission");
-                     res.redirect("back");
-                 }
             }
+        }).catch(function(err){
+            console.log(err);
+            res.redirect("back");
         });
     }else{
-        //res.send("error", "You need to be Logged In to do that");
         res.redirect("back");
     }
 };
 
-middlewareObj.checkCommentOwnership = function(req, res, next){
+middlewareObj.checkCommentOwnership = (req, res, next) =>{
     if(req.isAuthenticated()){
-        Comment.findById(req.params.comment_id, function(err, foundComment){
-            if(err){
+        Comment.findById(req.params.comment_id).then(function(foundComment){
+            if(foundComment.author.id.equals(req.user._id)){
+                next();
+            }else{
                 res.redirect("back");
-             }else{
-                 if(foundComment.author.id.equals(req.user._id)){
-                     next();
-                 }else{
-                     res.redirect("back");
-                 }
             }
+        }).catch(function(err){
+            console.log(err);
+            res.redirect("back");
         });
     }else{
         res.redirect("back");

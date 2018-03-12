@@ -13,29 +13,23 @@ router.get("/new", middleware.isLoggedIn, (req, res) =>{
 });
 
 //Comments Create
-router.post("/", middleware.isLoggedIn, function(req, res){
-    Recipe.findById(req.params.id, function(err, recipe){
-        if(err){
-            console.log(err);
-            res.redirect("/");
-        }else{
-            Comment.create(req.body.comment, function(err, comment){
-                if(err){
-                    res.sendStatus(500, err);
-                    console.log(err);
-                }else{
-                    //add username and id to comment
-                    comment.author.id = req.user._id;
-                    comment.author.username = req.user.username;
-                    //save comment
-                    comment.save();
-                    recipe.comments.push(comment);
-                    recipe.save();
-                    console.log(comment);
-                    res.redirect("/recipes/" + recipe._id);
-                }
-            });
-        }
+router.post("/", middleware.isLoggedIn, (req, res) =>{
+    Recipe.findById(req.params.id).then(function(recipe){
+        Comment.create(req.body.comment).then(function(comment){
+         comment.author.id = req.user._id;
+         comment.author.username = req.user.username;
+         //save comment
+         comment.save();
+         recipe.comments.push(comment);
+         recipe.save();
+         console.log(comment);
+         res.redirect("/recipes/" + recipe._id);
+        }).catch(function(err){
+            res.sendStatus(500, err);
+        });
+    }).catch(function(err){
+        console.log(err);
+        res.redirect("/");
     });
 });
 
