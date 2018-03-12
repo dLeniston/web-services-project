@@ -4,6 +4,7 @@ var Recipe  = require("../models/recipe");
 var Comment     = require("../models/comment");
 var middleware  = require("../middleware");
 
+//Get new comment form
 router.get("/new", middleware.isLoggedIn, (req, res) =>{
   Recipe.findById(req.params.id).then(function(recipe){
     res.render("newComment", {recipe: recipe});
@@ -12,7 +13,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) =>{
   });
 });
 
-//Comments Create
+//Create new comment
 router.post("/", middleware.isLoggedIn, (req, res) =>{
     Recipe.findById(req.params.id).then(function(recipe){
         Comment.create(req.body.comment).then(function(comment){
@@ -33,7 +34,7 @@ router.post("/", middleware.isLoggedIn, (req, res) =>{
     });
 });
 
-//EDIT ROUTE
+//Get comment edit form
 router.get("/:comment_id/edit", middleware.checkCommentOwnership, (req, res) => {
   Comment.findById(req.params.comment_id).then(function(foundComment){
     res.render("editComment", {recipe_id: req.params.id, comment: foundComment});
@@ -42,7 +43,7 @@ router.get("/:comment_id/edit", middleware.checkCommentOwnership, (req, res) => 
   });
 });
 
-//UPDATE ROUTE
+//Update a comment
 router.put("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment).then(function(updatedComment){
         res.redirect("/recipes/" + req.params.id);
@@ -51,7 +52,7 @@ router.put("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
     });
 });
 
-//DELETE ROUTE
+//Delete a comment
 router.delete("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
     Comment.findByIdAndRemove(req.params.comment_id).then(function(){
         res.redirect("back");

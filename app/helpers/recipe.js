@@ -9,7 +9,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) =>{
   res.render("newRecipe");
 });
 
-//New recipe post route
+//Create new recipe
 router.post('/', middleware.isLoggedIn, (req, res) => {
   //create recipe
   var name = req.body.name;
@@ -32,8 +32,7 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
     });
 });
 
-//--- RECIPE SHOW ROUTE ---//
-
+//Show a the recipe page with selected recipe information
 router.get("/:id", (req, res) =>{
   //find one recipe with correct id
   Recipe.findById(req.params.id).populate("comments").exec(function(err, foundRecipe){
@@ -46,9 +45,7 @@ router.get("/:id", (req, res) =>{
   });
 });
 
-//--- RECIPE EDIT ROUTES ---//
-
-//Get edit form
+//Get recipe edit form
 router.get("/:id/edit", middleware.checkRecipeOwnership, (req, res) => {
   Recipe.findById(req.params.id).then(function(foundRecipe){
     //render the edit form with the form filled in with the recipe to be updated current data
@@ -58,7 +55,8 @@ router.get("/:id/edit", middleware.checkRecipeOwnership, (req, res) => {
   });
 });
 
-//Find and update recipe
+//Update a recipe
+
 router.put("/:id", middleware.checkRecipeOwnership, (req, res) =>{
   //update the recipe
   Recipe.findByIdAndUpdate(req.params.id, req.body.recipe).then(function(updatedRecipe){
@@ -69,7 +67,7 @@ router.put("/:id", middleware.checkRecipeOwnership, (req, res) =>{
   });
 });
 
-//--- RECIPE DELETE ROUTE ---//
+//Delete a selected recipe
 
 router.delete("/:id", middleware.checkRecipeOwnership, (req, res) => {
   //delete recipe

@@ -8,6 +8,7 @@ module.exports = (app) => {
   app.use('/', router);
 };
 
+//Get index page and populate with recipe objects
 router.get('/', (req, res) => {
   Recipe.find().then(function(recipes){
     //show all recipes on the index page
@@ -19,12 +20,12 @@ router.get('/', (req, res) => {
   });
 });
 
-//Register form
+//Get register (sign up) form
 router.get("/register", (req, res) => {
    res.render("register");
 });
 
-//Register logic
+//Registration logic
 router.post("/register", (req, res) => {
   var newUser = new User({username:req.body.username});
   //Take information supplied by user and attempt to register account
@@ -40,12 +41,12 @@ router.post("/register", (req, res) => {
   });
 });
 
-//Login form
+//Get login form
 router.get("/login", (req, res) => {
    res.render("login");
 });
 
-//Login Logic
+//Login logic (using PassportJS)
 router.post("/login", passport.authenticate("local", 
     {
         successRedirect: "/",
@@ -58,18 +59,5 @@ router.get("/logout", (req, res) =>{
     req.logout();
     res.redirect("/");
 });
-
-//--- MIDDLEWARE ---//
-
-//Logged in middleware
-
-function isLoggedIn(req,res,next){
-  //If the user is authenticated (i.e. logged on, proceed to "next")
-    if(req.isAuthenticated()){
-        return next();
-    }
-    //Otherwise redirect them to login page (NOTE: DISPLAY MESSAGE LETTING USER KNOW WHY THEY WERE REDIRECTED)
-    res.redirect("/login");
-}
 
 module.exports = router;
