@@ -1,7 +1,7 @@
 <% include header %>
-<div class="container">
+<div class="container form-div">
     <div class="row">
-        <h1 style="text-align: center;">Edit <%= recipe.name %></h1>
+        <h1 style="text-align: center;"><i class="fa fa-edit"></i>Edit <%= recipe.name %></h1>
         <div style="width: 30%; margin: 30px auto;">
 
         <form action="/recipes/<%= recipe._id %>?_method=PUT" method="POST">
