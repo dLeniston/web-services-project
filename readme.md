@@ -4,6 +4,7 @@ This API was created as part of a project for a web services module using Node a
 Bootstrap with authentification being provided by *PassportJS*. It allows users to post their own recipes and add comments to others,
 middleware has been implemented to manage the ownership and permissions allowed to users to edit/delete their own recipes and comments.
 The configuration file is not included as part of this repository, an example config file can be found below.
+You can visit the hosted app on [Heroku here](https://calm-bayou-87875.herokuapp.com/)
 
 
 ##Routing Table
