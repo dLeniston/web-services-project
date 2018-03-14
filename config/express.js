@@ -11,9 +11,9 @@ const LocalStrategy   = require("passport-local");
 const User = require("../app/models/user");
 
 module.exports = (app, config) => {
-  const env = process.env.NODE_ENV || 'development';
+  const env = process.env.NODE_ENV || 'production';
   app.locals.ENV = env;
-  app.locals.ENV_DEVELOPMENT = env == 'development';
+  app.locals.ENV_DEVELOPMENT = env == 'production';
   
   app.use(require("express-session")({
     secret: "D51 AGASKI LRSDBC",

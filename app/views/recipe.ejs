@@ -1,19 +1,16 @@
 <% include header%>
 
-<div class = "container">
+<div class = "container recipe">
     <div class="row">
-        <div class="col-md-3">
-            <p class="lead">RecipeApp</p>
-        </div>
         <div class="col-md-9">
             <div class="thumbnail">
                 <img class="img-responsive" src="<%= recipe.img %>">
                 <div class="caption-full">
-                    <h4 class="pull-right">Ingredients: <%= recipe.ingredients %></h4>
-                    <h4><a href=""><%= recipe.name %></a></h4>
-                    <p>
-                         <h2>Instructions</h2>
-                         <%= recipe.instructions %>
+                    <h4 class="pull-right ingredients">Ingredients: <%= recipe.ingredients %></h4>
+                    <h4 id="recipeName"><%= recipe.name %></a></h4>
+                    <p class="flower">
+                         <h2 class="instructions">Instructions</h2>
+                         <span class="instructions"><%= recipe.instructions %></span>
                     </p>
                     <p>
                         <em>Submitted By <%=recipe.author.username %>, <%= recipe.created_date.toDateString() %></em>

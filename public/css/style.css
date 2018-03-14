@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Montserrat|Raleway');
 
 header{
     width: 100%;
@@ -55,4 +55,29 @@ background-position: center;
 
 i{
     padding-right: 15px;
+}
+
+h2{
+    font-weight: bold;
+}
+
+.ingredients{
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.1em;
+}
+
+.instructions{
+    font-family: "Raleway", sans-serif;
+    font-size: 1.7em;
+}
+
+#recipeName{
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.recipe{
+    float: none;
+    margin: 0 auto;
 }

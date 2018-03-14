@@ -27,7 +27,7 @@ const config = {
       name: 'recipeapi'
     },
     port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/recipeapi-production'
+    db: 'mongodb://darren:hJs1KlsAbVcq@ds111319.mlab.com:11319/recipeapp'
   }
 };
 

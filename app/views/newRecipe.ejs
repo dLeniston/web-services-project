@@ -3,9 +3,9 @@
   <div class="container form-div">
     <div class="row">
         <h1 style="text-align: center;"><i class="fa fa-pencil-alt"></i>Create a New Recipe</h1>
-        <div style="width: 30%; margin: 30px auto;">
+        <div style="width: 80%; margin: 30px auto;">
 
-        <form action="/recipes/new" method="POST">
+        <form action="/recipes" method="POST">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input class="form-control" type="text" name="name" placeholder="Pancakes">
@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label for="instructions">Instructions</label>
-                <input class="form-control" type="text" name="instructions" placeholder="Mix flour with egg and milk, stir, pour thin layer on hot pan and flip after 2 mins">
+                <textarea class="form-control" name="instructions" rows="10" cols="30" placeholder="Mix flour with egg and milk, stir, pour thin layer on hot pan and flip after 2 mins"></textarea>
             </div>
             <div class="form-group">
                 <button class="btn btn-lg btn-primary btn-block">Submit!</button>
