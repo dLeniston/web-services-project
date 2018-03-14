@@ -1,4 +1,4 @@
-#RecipeApp
+#RecipeApp#
 
 This API was created as part of a project for a web services module using Node and Express. It includes a simple front-end implemented using EJS and 
 Bootstrap with authentification being provided by *PassportJS*. It allows users to post their own recipes and add comments to others,
@@ -7,7 +7,7 @@ The configuration file is not included as part of this repository, an example co
 You can visit the hosted app on [Heroku here](https://calm-bayou-87875.herokuapp.com/)
 
 
-##Routing Table
+##Routing Table##
 
 |**Resource**                     |**Get**  	               |**Post**   	        |**Put**   	           |**Delete**            |   	
 |---	                          |---	                       |---	                |---	               |---	                  |
@@ -25,7 +25,7 @@ You can visit the hosted app on [Heroku here](https://calm-bayou-87875.herokuapp
 |/recipes/:id/comments/:id/edit   |Get Edit Comment Page   	   |N/A   	            |N/A   	               |N/A   	              |
 |/recipes/:id/comments/:id/       |N/A   	                   |N/A  	            |Update a Comment  	   |Delete a Comment   	  |
 
-##Example Config File
+##Example Config File##
 
 If you wish to make use of this application, copy this configuration template and add your own database information. Save as config.js in the config folder found in the root directory.
 *Fill in the parts enclosed with <> with your own information and select an option (development, test or production).
