@@ -9,21 +9,20 @@ You can visit the hosted app on [Heroku here](https://calm-bayou-87875.herokuapp
 
 ## Routing Table
 
-|**Resource**                     |**Get**  	               |**Post**   	        |**Put**   	           |**Delete**            |   	
-|---	                          |---	                       |---	                |---	               |---	                  |
-|/   	                          |Get Index Page(All Recipes) |N/A   	            |N/A   	               |N/A                   |
-|/register   	                  |Get Sign Up Page   	       |Sign Up User   	    |N/A   	               |N/A                   |
-|/login   	                      |Get Login Page   	       |Log In User   	    |N/A   	               |N/A                   |
-|/logout   	                      |Logout User   	           |N/A   	            |N/A   	               |N/A                   |
-|/recipes/new                     |Get New Recipe Page   	   |N/A   	            |N/A   	               |N/A                   |
-|/recipes/                        |N/A   	         	       |Create New Recipe   |N/A   	               |N/A                   |
-|/recipes/:id/edit   	          |Get Edit Recipe Page        |N/A   	            |N/A   	               |N/A                   |
-|/recipes/:id   	              |Get a Recipe & Associated   |N/A                 |Update a Recipe       |Delete a Recipe       |
-|                                 |Comments                    |                    |                      |                      |
-|/recipes/:id/comments/new   	  |Get New Comment Page   	   |N/A   	            |N/A   	               |N/A   	              |
-|/recipes/:id/comments/   	      |N/A   	                   |Create New Comment  |N/A   	               |N/A   	              |
-|/recipes/:id/comments/:id/edit   |Get Edit Comment Page   	   |N/A   	            |N/A   	               |N/A   	              |
-|/recipes/:id/comments/:id/       |N/A   	                   |N/A  	            |Update a Comment  	   |Delete a Comment   	  |
+|**Resource**                     |**Get**  	                        |**Post**   	    |**Put**   	       |**Delete**            |   	
+|---	                          |---	                                |---	            |---	           |---	                  |
+|/   	                          |Get Index Page(All Recipes)          |N/A   	            |N/A   	           |N/A                   |
+|/register   	                  |Get Sign Up Page   	                |Sign Up User   	|N/A   	           |N/A                   |
+|/login   	                      |Get Login Page   	                |Log In User   	    |N/A   	           |N/A                   |
+|/logout   	                      |Logout User   	                    |N/A   	            |N/A   	           |N/A                   |
+|/recipes/new                     |Get New Recipe Page   	            |N/A   	            |N/A   	           |N/A                   |
+|/recipes/                        |N/A   	         	                |Create New Recipe  |N/A   	           |N/A                   |
+|/recipes/:id/edit   	          |Get Edit Recipe Page                 |N/A   	            |N/A   	           |N/A                   |
+|/recipes/:id   	              |Get a Recipe & Associated Comments   |N/A                |Update a Recipe   |Delete a Recipe       |
+|/recipes/:id/comments/new   	  |Get New Comment Page   	            |N/A   	            |N/A   	           |N/A   	              |
+|/recipes/:id/comments/   	      |N/A   	                            |Create New Comment |N/A   	           |N/A   	              |
+|/recipes/:id/comments/:id/edit   |Get Edit Comment Page   	            |N/A   	            |N/A   	           |N/A   	              |
+|/recipes/:id/comments/:id/       |N/A   	                            |N/A  	            |Update a Comment  |Delete a Comment   	  |
 
 ## Example Config File
 
