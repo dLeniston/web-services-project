@@ -27,11 +27,11 @@ You can visit the hosted app on [Heroku here](https://calm-bayou-87875.herokuapp
 ## Example Config File
 
 If you wish to make use of this application, copy this configuration template and add your own database information. Save as config.js in the config folder found in the root directory.
-*Fill in the parts enclosed with <> with your own information and select an option (development, test or production)*.
+*Fill in the parts enclosed with () with your own information and select an option (development, test or production)*.
 
 const path = require('path');
 const rootPath = path.normalize(__dirname + '/..');
-const env = process.env.NODE_ENV || **<development/test/production>**;
+const env = process.env.NODE_ENV || **(development/test/production)**;
 
 const config = {
   development: {
@@ -40,7 +40,7 @@ const config = {
       name: 'recipeapi'
     },
     port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/**<dev database>**'
+    db: 'mongodb://localhost/**(dev database)**'
   },
 
   test: {
@@ -49,7 +49,7 @@ const config = {
       name: 'recipeapi'
     },
     port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/**<test database>**'
+    db: 'mongodb://localhost/**(test database)**'
   },
 
   production: {
@@ -58,7 +58,7 @@ const config = {
       name: 'recipeapi'
     },
     port: process.env.PORT || 3000,
-    db: '**<production database>**'
+    db: '**(production database)**'
   }
 };
 
