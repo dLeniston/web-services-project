@@ -63,3 +63,5 @@ const config = {
 };
 
 module.exports = config[env];
+
+This application includes tests and a test database, to use this edit your config file appropriately. This API uses asynchronous calls and routing.
