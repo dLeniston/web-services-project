@@ -1,8 +1,8 @@
-var express     = require("express");
-var router      = express.Router();
-var User        = require("../models/user");
-var Recipe      = require("../models/recipe");
-var passport    = require("passport");
+const express     = require("express");
+const router      = express.Router();
+const User        = require("../models/user");
+const Recipe      = require("../models/recipe");
+const passport    = require("passport");
 
 module.exports = (app) => {
   app.use('/', router);
