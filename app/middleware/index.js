@@ -11,7 +11,7 @@ middlewareObj.isLoggedIn = (req, res, next) =>{
         return next();
     }else{
         //otherwise redirect them to the login page
-    res.redirect("/login");
+        res.redirect("/login");
     }
 };
 

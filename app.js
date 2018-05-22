@@ -12,7 +12,7 @@ db.on('error', () => {
 });
 
 const models = glob.sync(config.root + '/app/models/*.js');
-models.forEach(function (model) {
+models.forEach(function(model) {
   require(model);
 });
 const app = express();
