@@ -12,6 +12,10 @@ router.get("/new", middleware.isLoggedIn, (req, res) =>{
 //Create new recipe
 router.post('/', middleware.isLoggedIn, async function(req, res, next){
     try{
+      let format = /[@#$%^*+\=\[\];\\|<>\/]/;
+      if(req.body.name.match(format) || req.body.ingredients.match(format) || req.body.instructions.match(format)){
+        return res.status(500).json({errMessage: "Error posting recipe. Please do not use any of the following characters: @#$%^*+\=\[\];\\|<>\/"});
+      }
       let recipe = await Recipe.create({
         name: req.body.name,
         img: req.body.img,
@@ -53,6 +57,10 @@ router.get('/:id/edit', middleware.checkRecipeOwnership, async function(req, res
 //Update a recipe
 router.put('/:id', middleware.checkRecipeOwnership, async function(req, res, next){
   try{
+      let format = /[@#$%^*+\=\[\];\\|<>\/]/;
+      if(req.body.recipe.name.match(format) || req.body.recipe.ingredients.match(format) || req.body.recipe.instructions.match(format)){
+        return res.status(500).json({errMessage: "Error posting recipe. Please do not use any of the following characters: @#$%^*+\=\[\];\\|<>\/"});
+      }
       let updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, req.body.recipe);
       await updatedRecipe.save();
       res.redirect('/recipes/' + req.params.id);

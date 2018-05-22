@@ -17,6 +17,11 @@ router.get('/new', middleware.isLoggedIn, async function(req, res, next){
 //Create new comment
 router.post('/', middleware.isLoggedIn, async function(req, res, next){
     try{
+        console.log(req.body.comment.text);
+        let format = /[@#$%^*+\=\[\];\\|<>\/]/;
+        if(req.body.comment.text.match(format) || req.body.comment.text.length >= 200){
+            return res.status(500).json({msg: "Error posting comment, please ensure comment length is no more than 200 characters and does not contain any of the following: @#$%^*+\=\[\];\\|<>\/"});
+        }
         let recipe = await Recipe.findById(req.params.id);
         let comment = await Comment.create(req.body.comment);
         comment.author.id = req.user._id;
@@ -43,6 +48,10 @@ router.get('/:comment_id/edit', middleware.checkCommentOwnership, async function
 //Update a Comment
 router.put('/:comment_id', middleware.checkCommentOwnership, async function(req, res, next){
     try{
+        let format = /[@#$%^*+\=\[\];\\|<>\/]/;
+        if(req.body.comment.text.match(format) || req.body.comment.text.length >= 200){
+            return res.status(500).json({msg: "Error updating comment, please ensure comment length is no more than 200 characters and does not contain any of the following: @#$%^*+\=\[\];\\|<>\/"});
+        }
         let updatedComment = await Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment);
         await updatedComment.save();
         res.redirect('/recipes/' + req.params.id);
